@@ -12,6 +12,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from teapot import arithmetic
+
 
 def read(file):
     global vertices, faces
@@ -37,37 +39,46 @@ def read(file):
         return vertices, faces
 
 
-def normalization(vertices, xd, yd):
-    a = np.ones((3644, 2), dtype=np.float64)
-    vertices = vertices * 100
-    for i in range(a.shape[0]):
-        a[i][1] = a[i][1] * yd / 2
-        a[i][0] = a[i][0] * xd / 2
-    # print(a)
-    return vertices + a
-
-
 def draw(image, vertices, color):
     vertices = np.int32(np.round(vertices))
     for i in range(vertices.shape[0]):
-        image[vertices[i][0], vertices[i][1], :] = color
+        image[vertices[i, 0], vertices[i, 1], :] = color
     return np.flipud(image.transpose((1, 0, 2)))
 
 
-if __name__ == '__main__':
+# преобразование координат под нормальное отображение ОНО НАЧАЛО РАБОТАТЬ!:)
+def viewPort(vertices, height, width):
+    model = arithmetic.modelSize(vertices)
+    for i in range(vertices.shape[0]):
+        vertices[i, 0] = (vertices[i, 0]) * width / model[0]*0.5
+        vertices[i, 1] = (vertices[i, 1]) * height / model[0]*0.5
+    # определяем новые минимумы увеличенной модели
+    xMin, yMin = arithmetic.minOfVertX(vertices), arithmetic.minOfVertY(vertices)
+    centerPoint = arithmetic.centerPoint(vertices)
+    #print(centerPoint)
+    # перемещение на H/h W/w
+    for i in range(vertices.shape[0]):
+        vertices[i, 0] += width / 2 - centerPoint[0]+ abs(xMin)
+        vertices[i, 1] += height / 2 - centerPoint[1] + abs(yMin)
+    # новый vertices
+    #print(arithmetic.minOfVertX(vertices), arithmetic.minOfVertY(vertices))
+    return vertices
+
+
+def dotted_main():
     vertices, faces = read("teapot.obj")
-
-    xd = np.int32(np.max(vertices[0]) - np.min(vertices[0])) * 200
-    yd = np.int32(np.max(vertices[1]) - np.min(vertices[1])) * 200
-    # print(xd,yd)
-
-    image = np.zeros((xd, yd, 3), dtype=np.uint8)
+    # Выбирать height<=width
+    height, width = 800, 800
+    image = np.zeros((width, height, 3), dtype=np.uint8)
     color = np.array([155, 255, 155], dtype=np.uint8)
-
-    # vertices = normalization(vertices,xd,yd)
+    vertices = viewPort(vertices, height, width)
     image = draw(image, vertices, color)
 
     plt.figure()
     plt.imshow(image)
     plt.show()
     # plt.imsave('pic_1.png', image)
+
+
+if __name__ == '__main__':
+    dotted_main()
