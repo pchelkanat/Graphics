@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from teapot.dotted_teapot import read, normalization
-
+from teapot.dotted_teapot import read, viewPort
 
 def bresenhamLine(image, x0, y0, x1, y1, color):
     steep = abs(x1 - x0) < abs(y1 - y0)
@@ -42,7 +41,6 @@ def triangle(image, faces, vertices, color):
         bresenhamLine(image, p0[0], p0[1], p2[0], p2[1], color)
     return np.flipud((image).transpose((1, 0, 2)))
 
-
 def triangular_main():
     # _________SOME EXAMPLES_________
     # print(faces.shape[0], faces.shape[1], vertices.shape[0], vertices.shape[1])
@@ -62,23 +60,17 @@ def triangular_main():
     # print(vertices.shape[0], vertices[0],vertices[3643])
     #   3644 1'st 3644'th .obj's lines
     vertices, faces = read("teapot.obj")
-
-    xd = np.int32(np.max(vertices[0]) - np.min(vertices[0])) * 200
-    yd = np.int32(np.max(vertices[1]) - np.min(vertices[1])) * 200
-    # print(xd,yd)
-
-    image = np.zeros((yd, xd, 3), dtype=np.uint8)
+    #Выбирать height<=width
+    height, width = 800,800
+    image = np.zeros((height, width, 3), dtype=np.uint8)
     color = np.array([155, 255, 155], dtype=np.uint8)
-
-    vertices = normalization(vertices, xd, yd)
+    vertices = viewPort(vertices, height, width)
     image = triangle(image, faces, vertices, color)
 
     plt.figure()
     plt.imshow(image)
     plt.show()
-
-
-# plt.imsave('pic_2.png',image)
+    #plt.imsave('pic_2.png',image)
 
 if __name__ == '__main__':
     triangular_main()
