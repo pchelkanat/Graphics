@@ -1,4 +1,3 @@
-from teapot.arithmetic import *
 from teapot.dotted_teapot import *
 
 
@@ -39,7 +38,7 @@ def triangle(image, faces, vertices, color):
         bresenhamLine(image, p0[0], p0[1], p1[0], p1[1], color)
         bresenhamLine(image, p1[0], p1[1], p2[0], p2[1], color)
         bresenhamLine(image, p0[0], p0[1], p2[0], p2[1], color)
-    return np.flipud((image).transpose((1, 0, 2)))
+    return image  # np.flipud((image).transpose((1, 0, 2)))
 
 
 def triangular_main():
@@ -63,14 +62,14 @@ def triangular_main():
 
     pic_size = min(int(width / 2), int(height / 2))
 
-    vertices, faces = read("teapot.obj")
+    vertices, faces = read("teddy.obj")
     vertices = vertexes_to_projective(vertices)
     vertices, w, h = ortho_project(vertices)
     vertices = screen_project(vertices, width, height, w, h)
     # Выбирать height<=width
 
     # image = prepare_image(pic_size)
-    image = np.array((height, width, 3), dtype=np.uint8)
+    image = np.zeros((height, width, 3), dtype=np.uint8)
     color = np.array([155, 255, 155], dtype=np.uint8)
     # vertices = viewPort(vertices, height, width)
     image = triangle(image, faces, vertices, color)

@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 from teapot.arithmetic import *
 
 # root = tkinter.Tk()
-width = 1000  # root.winfo_screenwidth()
-height = 1000  # root.winfo_screenheight()
+width = 800  # root.winfo_screenwidth()
+height = 800  # root.winfo_screenheight()
 pic_size = min(int(width / 2), int(height / 2))
 
 
@@ -81,14 +81,13 @@ def prepare_image(pic_size):
 
 
 def dotted_main():
-
-    vertices, faces = read("teddy.obj")
+    vertices, faces = read("teapot.obj")
     vertices = vertexes_to_projective(vertices)
     vertices, w, h = ortho_project(vertices)
     vertices = screen_project(vertices, width, height, w, h)
 
     # image = prepare_image(pic_size)# для pic_size не хватает
-    image = np.array((height, width, 3), dtype=np.uint8)
+    image = np.zeros((height, width, 3), dtype=np.uint8)
     print(image.shape)
     color = np.array([155, 255, 155], dtype=np.uint8)
 
