@@ -33,17 +33,17 @@ def drawFrames(image, vertices, faces, delta, alpha, num_scale, frames_count, gr
         # поворот
         rotates = np.dot(translates, scale(i * alpha / frames_count))
         # масштаб
-        # если угол <=2pi, то мы уменьшаем, иначе увеличиваем
+        #если угол <=2pi, то мы уменьшаем, иначе увеличиваем
         if (i * alpha / frames_count) <= (2 * np.pi):
             scales = np.dot(rotates, np.linalg.inv(scale(i * num_scale / frames_count)))
         else:
             scales = np.dot(rotates, scale(i * num_scale / frames_count))
-        # трансляция
+        #трансляция
         detransletes = np.dot(scales, translation(delta))
         # переводим в декартовую
         vertices = retransform(detransletes)
 
-        # ???Раскраска
+        #???Раскраска
         color = coloring(green, red)
         image = triangle(image, faces, vertices, color)
 
