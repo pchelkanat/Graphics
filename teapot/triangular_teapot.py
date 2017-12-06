@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy as np
+from teapot.arithmetic import *
+from teapot.dotted_teapot import *
 
-from teapot.dotted_teapot import read, viewPort
 
 def bresenhamLine(image, x0, y0, x1, y1, color):
     steep = abs(x1 - x0) < abs(y1 - y0)
@@ -17,9 +16,10 @@ def bresenhamLine(image, x0, y0, x1, y1, color):
     error = 0
     y_curr = y0
     y_incr = 1 if dy > 0 else -1
-    for x in range(x0, x1):
+    for x in range(x0, x1 + 1):
         if steep:
             image[y_curr, x, :] = color
+
         else:
             image[x, y_curr, :] = color
         error += derror
@@ -41,6 +41,7 @@ def triangle(image, faces, vertices, color):
         bresenhamLine(image, p0[0], p0[1], p2[0], p2[1], color)
     return np.flipud((image).transpose((1, 0, 2)))
 
+
 def triangular_main():
     # _________SOME EXAMPLES_________
     # print(faces.shape[0], faces.shape[1], vertices.shape[0], vertices.shape[1])
@@ -50,7 +51,7 @@ def triangular_main():
 
     # print(faces[6319][0], vertices[3000])
     #   3001 as vertices[3000]
-    # p0 = vertices[faces[6319][0]-1] #as like as vertices[3000] in .obj is 3001'th line
+    # p0 = vertices[faces[6319][0]-1] #as like as vertices[3000] in .obj is 3001'st line
     #   p0 = np.int32(p0)
     # print(p0, p0[0],p0.dtype)
     #   x,y coordinates from vertices[3000]int32
@@ -59,18 +60,26 @@ def triangular_main():
     #   6320 3646'th 9965'th .obj's lines
     # print(vertices.shape[0], vertices[0],vertices[3643])
     #   3644 1'st 3644'th .obj's lines
+
+    pic_size = min(int(width / 2), int(height / 2))
+
     vertices, faces = read("teapot.obj")
-    #Выбирать height<=width
-    height, width = 800,800
-    image = np.zeros((height, width, 3), dtype=np.uint8)
+    vertices = vertexes_to_projective(vertices)
+    vertices, w, h = ortho_project(vertices)
+    vertices = screen_project(vertices, width, height, w, h)
+    # Выбирать height<=width
+
+    # image = prepare_image(pic_size)
+    image = np.array((height, width, 3), dtype=np.uint8)
     color = np.array([155, 255, 155], dtype=np.uint8)
-    vertices = viewPort(vertices, height, width)
+    # vertices = viewPort(vertices, height, width)
     image = triangle(image, faces, vertices, color)
 
     plt.figure()
-    plt.imshow(image)
+    plt.imshow(np.rot90(image))
     plt.show()
-    #plt.imsave('pic_2.png',image)
+    # plt.imsave('pic_2.png',image)
+
 
 if __name__ == '__main__':
     triangular_main()
