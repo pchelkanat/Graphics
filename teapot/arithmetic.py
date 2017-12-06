@@ -42,12 +42,13 @@ def modelYd(vertices):
 
 
 def modelSize(vertices):
-    # отсчет начинается с 0, поэтому как минимум прибавляем 1
-    size = [modelXd(vertices) + 1, modelYd(vertices) + 1]
+    # отсчет начинается с 0, поэтому прибавляем 1
+    # !!!не прибавляем
+    size = [modelXd(vertices), modelYd(vertices)]
     return size
 
 
-# Центральная точка относительно модели
+# Центральная точка относительно самой модели
 def centerPoint(vertices):
     center = [modelXd(vertices) / 2, modelYd(vertices) / 2]
     return center
@@ -74,35 +75,41 @@ def ortho_project(vertexes):
 # Проективная СК
 def vertexes_to_projective(vertexes):
     return np.concatenate([vertexes.copy(), np.ones(vertexes.shape[0]).reshape(-1, 1)],
-                          axis=1)  #А зачем Петровец делал reshape?
+                          axis=1)  # А зачем Петровец делал reshape?
+
 
 def transform(vertices):
-    return np.hstack((vertices, np.ones(vertices.shape[0])[:, np.newaxis]))
+    TF = np.hstack((vertices, np.ones(vertices.shape[0])[:, np.newaxis]))
+    return TF
 
 
 # Перенос
-def translation(Ex, Ey):
-    return np.array([[1, 0, 0],
-                     [0, 1, 0],
-                     [Ex, Ey, 1]])
+def translation(delta):
+    TR = np.array([[1, 0, 0],
+                   [0, 1, 0],
+                   [delta[0], delta[1], 1]])
+    return TR
 
 
 # Масштаб
 def scale(num_scale):
-    return np.array([[num_scale, 0, 0],
-                     [0, num_scale, 0],
-                     [0, 0, 1]])
+    SC = np.array([[num_scale, 0, 0],
+                   [0, num_scale, 0],
+                   [0, 0, 1]])
+    return SC
 
 
 # Поворот
 def rotation(alpha):
-    return np.array([[np.cos(alpha), -np.sin(alpha), 0],
-                     [np.sin(alpha), np.cos(alpha), 0],
-                     [0, 0, 1]])
+    RT = np.array([[np.cos(alpha), -np.sin(alpha), 0],
+                   [np.sin(alpha), np.cos(alpha), 0],
+                   [0, 0, 1]])
+    return RT
 
 
 # Декартовая СК+
 def screen_project(vertexes, width, height, w, h):
+    width, height = width - 1, height - 1
     x = vertexes[:, 0]
     y = vertexes[:, 1]
     proj_1 = vertexes[:, 3]
@@ -110,6 +117,8 @@ def screen_project(vertexes, width, height, w, h):
     y = y / proj_1
     vertexes[:, 0] = x
     vertexes[:, 1] = y
+
+    # стыковка к осям Ox,Oy
     vertexes[:, 0] = width * 0.5 * vertexes[:, 0] + width * 0.5
     vertexes[:, 1] = height * 0.5 * vertexes[:, 1] + height * 0.5
     if w > h:
@@ -120,11 +129,22 @@ def screen_project(vertexes, width, height, w, h):
     vertexes = np.round(vertexes)
     vertexes = np.array(vertexes, dtype=int)
     vertexes = vertexes[:, :2]
-    #print(np.min(vertexes[0]), np.max(vertexes[0]), np.min(vertexes[1]), np.max(vertexes[1]))
+
+    """
+    center = centerPoint(vertexes)
+    size = modelSize(vertexes)
+    # print(center,size)
+    # помещаем ровно посередине
+    if size[0] <= size[1]:
+        size[0], size[1] = size[1], size[0]
+        height, width = width, height
+    vertexes[:, 0] = vertexes[:, 0] + (width * 0.5 - center[0])
+    vertexes[:, 1] = vertexes[:, 1] + (height * 0.5 - center[1])
+    """
     return vertexes
 
 
-#Еще одна формула
+# Еще одна формула
 def retransform(vertices):
     # print(vertices.shape)
     # 3644,3
@@ -152,6 +172,7 @@ def matrix(vertices, delta, num_scale, alpha):
 
     return vertices
 """
+
 
 # Изменение цвета
 def coloring(color1, color2):
