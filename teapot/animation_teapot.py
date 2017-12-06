@@ -1,20 +1,19 @@
 import matplotlib.animation as animation
 
-from teapot.arithmetic import *
 from teapot.dotted_teapot import *
 from teapot.triangular_teapot import triangle
 
 
 # ----------Для анимации
 
-def drawFrames(image, vertices, faces, delta, alpha, num_scale, frames_count, color, height, width):
+def drawFrames(image, vertices, faces, delta, alpha, num_scale, frames_count, green, red, height, width):
     ims = []
     for i in range(1, frames_count + 1, ):
         # преобразуем в проективные СК, добавляем координату w
         newvertices = transform(vertices)
         # трансформируем
         translates = np.dot(newvertices, translation(-delta[0], -delta[1]))
-        if i * num_scale / frames_count <= 2 * np.pi:
+        if (i * num_scale / frames_count) <= (2 * np.pi):
             scales = np.dot(translates, scale(i * num_scale / frames_count))
         else:
             scales = np.dot(translates, scale(i * (1 / num_scale) / frames_count))
@@ -23,6 +22,8 @@ def drawFrames(image, vertices, faces, delta, alpha, num_scale, frames_count, co
         # переводим в декартовую
         vertices = retransform(detransletes)
         # vertices=matrix(vertices,delta,num_scale, alpha)
+
+        color = coloring(green, red)
         image = triangle(image, faces, vertices, color)
 
         im = plt.imshow(image, animated=True)
@@ -39,7 +40,7 @@ def animation_main():
     vertices, faces = read("teapot.obj")
     height, width = 800, 800
 
-    frames_count = 7
+    frames_count = 7  # с увеличением фреймов уменьшается чайник. min=6, после выходит за рамки
     num_scale = 2
     delta = [height / 2, width / 2]
     alpha = 2 * np.pi
@@ -56,7 +57,7 @@ def animation_main():
 
     # ----------Анимация
     fig = plt.figure()
-    ims = drawFrames(image, vertices, faces, delta, alpha, num_scale, frames_count, color, height, width)
+    ims = drawFrames(image, vertices, faces, delta, alpha, num_scale, frames_count, green, red, height, width)
     ani = animation.ArtistAnimation(fig, ims, interval=100, repeat=True, blit=True)
 
     # ani.save('teapot_animation.mp4')
