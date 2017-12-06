@@ -130,7 +130,6 @@ def screen_project(vertexes, width, height, w, h):
     vertexes = np.array(vertexes, dtype=int)
     vertexes = vertexes[:, :2]
 
-    """
     center = centerPoint(vertexes)
     size = modelSize(vertexes)
     # print(center,size)
@@ -140,7 +139,7 @@ def screen_project(vertexes, width, height, w, h):
         height, width = width, height
     vertexes[:, 0] = vertexes[:, 0] + (width * 0.5 - center[0])
     vertexes[:, 1] = vertexes[:, 1] + (height * 0.5 - center[1])
-    """
+
     return vertexes
 
 
