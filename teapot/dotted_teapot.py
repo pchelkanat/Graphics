@@ -8,13 +8,12 @@
 	3. Функцию отображения изображения на экран или сохранение в файл.
 ? Изображение представить в виде трехмерного numpy массива (rgb). Ширину и высоту выбрать самим. Цвет вершин так же выбрать самим.
 '''
-import tkinter
 
 import matplotlib.pyplot as plt
 
 from teapot.arithmetic import *
 
-root = tkinter.Tk()
+# root = tkinter.Tk()
 width = 1000  # root.winfo_screenwidth()
 height = 1000  # root.winfo_screenheight()
 pic_size = min(int(width / 2), int(height / 2))
@@ -54,7 +53,7 @@ def draw(image, vertices, color):
 
 
 """Ненужная вещь
-Зато мысли интересные...
+Зато мысли были интересные...
 def view(vertices, height, width):
     model = modelSize(vertices)
     for i in range(vertices.shape[0]):
@@ -82,16 +81,16 @@ def prepare_image(pic_size):
 
 
 def dotted_main():
+
     vertices, faces = read("teddy.obj")
     vertices = vertexes_to_projective(vertices)
     vertices, w, h = ortho_project(vertices)
     vertices = screen_project(vertices, width, height, w, h)
 
-    # image = prepare_image(pic_size)
+    # image = prepare_image(pic_size)# для pic_size не хватает
     image = np.array((height, width, 3), dtype=np.uint8)
     print(image.shape)
     color = np.array([155, 255, 155], dtype=np.uint8)
-    print(image.shape)
 
     image = draw(image, vertices, color)
 
