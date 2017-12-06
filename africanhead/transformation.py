@@ -1,9 +1,7 @@
-import numpy as np
-
-import Vector
+from africanhead import vector
 from africanhead.сonstants import *
 
-X, Y, Z, W = 0, 1, 2, 3
+# X, Y, Z, W = 0, 1, 2, 3
 
 identityMatrix = np.array([[1, 0, 0, 0],
                            [0, 1, 0, 0],
@@ -20,17 +18,17 @@ _worldMatrix = np.linalg.inv(worldMatrix)
 
 # Матрицы поворота по осям
 xRotateMatrix = np.array([[1, 0, 0, 0],
-                          [0, math.cos(XAxisRotation), -(math.sin(XAxisRotation)), 0],
-                          [0, math.sin(XAxisRotation), math.cos(XAxisRotation), 0],
+                          [0, np.cos(XAxisRotation), -(np.sin(XAxisRotation)), 0],
+                          [0, np.sin(XAxisRotation), np.cos(XAxisRotation), 0],
                           [0, 0, 0, 1]])
 
-yRotateMatrix = np.array([[math.cos(YAxisRotation), 0, (math.sin(YAxisRotation)), 0],
+yRotateMatrix = np.array([[np.cos(YAxisRotation), 0, (np.sin(YAxisRotation)), 0],
                           [0, 1, 0, 0],
-                          [-math.sin(YAxisRotation), 0, math.cos(YAxisRotation), 0],
+                          [np.sin(YAxisRotation), 0, np.cos(YAxisRotation), 0],
                           [0, 0, 0, 1]])
 
-zRotateMatrix = np.array([[math.cos(ZAxisRotation), -math.sin(ZAxisRotation), 0, 0],
-                          [math.sin(ZAxisRotation), math.cos(ZAxisRotation), 0, 0],
+zRotateMatrix = np.array([[np.cos(ZAxisRotation), -np.sin(ZAxisRotation), 0, 0],
+                          [np.sin(ZAxisRotation), np.cos(ZAxisRotation), 0, 0],
                           [0, 0, 1, 0],
                           [0, 0, 0, 1]])
 
@@ -38,30 +36,30 @@ zRotateMatrix = np.array([[math.cos(ZAxisRotation), -math.sin(ZAxisRotation), 0,
 """
 https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_BasicsTheory.html#zz-4.3
 """
-lookVector = Vector.normalize([lookPointX - cameraX, lookPointY - cameraY, lookPointZ - cameraZ, 0.0])
+lookVector = vector.normalize([lookPointX - cameraX, lookPointY - cameraY, lookPointZ - cameraZ, 0.0])
 # lookVector = Vector.normalize(lookVector)
 
-rightVector = Vector.normalize(Vector.crossProduct([0, 1, 0, 0], lookVector))
+rightVector = vector.normalize(vector.crossProduct([0, 1, 0, 0], lookVector))
 # rightVector = Vector.normalize(rightVector)
 
-upVector = Vector.normalize(Vector.crossProduct(lookVector, rightVector))
+upVector = vector.normalize(vector.crossProduct(lookVector, rightVector))
 # upVector = Vector.normalize(upVector)
 
-CameraPos = [cameraX, cameraY, cameraZ, 1]
+cameraPos = [cameraX, cameraY, cameraZ, 1]
 
-viewMatrix = np.array([[rightVector[X], upVector[X], lookVector[X], 0],
-                       [rightVector[Y], upVector[Y], lookVector[Y], 0],
-                       [rightVector[Z], upVector[Z], lookVector[Z], 0],
-                       [-(Vector.dotProduct(CameraPos, rightVector)), -(Vector.dotProduct(CameraPos, upVector)),
-                        -(Vector.dotProduct(CameraPos, lookVector)), 1]])
+viewMatrix = np.array([[rightVector[0], upVector[0], lookVector[0], 0],
+                       [rightVector[1], upVector[1], lookVector[1], 0],
+                       [rightVector[2], upVector[2], lookVector[2], 0],
+                       [-(vector.dotProduct(cameraPos, rightVector)), -(vector.dotProduct(cameraPos, upVector)),
+                        -(vector.dotProduct(cameraPos, lookVector)), 1]])
 
-ScreenMatrix = np.array([[ViewportWidth / 2, 0, 0, 0],
-                         [0, -ViewportHeight / 2, 0, 0],
+screenMatrix = np.array([[viewportWidth / 2, 0, 0, 0],
+                         [0, -viewportHeight / 2, 0, 0],
                          [0, 0, 1, 0],
-                         [ViewportWidth / 2, ViewportHeight / 2, 0, 1]])
+                         [viewportWidth / 2, viewportHeight / 2, 0, 1]])
 
 # PROJECTION MATRIX
-yScale = (math.cos(FOV / 2) / math.sin(FOV / 2))
+yScale = (np.cos(FOV / 2) / np.sin(FOV / 2))
 xScale = yScale / aspectRatio
 zf = farPlane / (farPlane - nearPlane)
 zn = -(nearPlane * farPlane) / (farPlane - nearPlane)

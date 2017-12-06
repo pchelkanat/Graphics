@@ -1,8 +1,8 @@
-# Для удобства
 import numpy as np
 
-X, Y, Z, W = 0, 1, 2, 3
-R, G, B = 0, 1, 2
+
+# X, Y, Z, W = 0, 1, 2, 3
+# R, G, B = 0, 1, 2
 
 
 def bresenhamLine(image, x0, y0, x1, y1, color):
@@ -34,14 +34,14 @@ def bresenhamLine(image, x0, y0, x1, y1, color):
 # Барицентрические координаты
 def toBarycentric(vertices, point):
     triangle_mx = np.zeros((3, 3))
-    triangle_mx[0] = vertices[1] - vertices[0]
-    triangle_mx[1] = vertices[2] - vertices[0]
-    triangle_mx[2] = vertices[0] - point
-    # векторное произведение
+    triangle_mx[0] = vertices[1] - vertices[0]  # разница между Y X
+    triangle_mx[1] = vertices[2] - vertices[0]  # между Z X
+    triangle_mx[2] = vertices[0] - point  # между X и точкой
+    # хранилище векторное произведение
     cp = np.cross(triangle_mx[:, 0], triangle_mx[:, 1])
     if np.abs(cp[2]) < 1:
         return np.array([-99.0, -99.0, -99.0])  # костыль, тут выдаются ошибки
-    bc_coords = np.zeros(3)  # барицентрические координаты
+    bc_coords = np.zeros(3)  # будем хранить тут барицентрические координаты
     bc_coords[0] = 1.0 - (cp[0] + cp[1]) / cp[2]
     bc_coords[1] = cp[1] / cp[2]
     bc_coords[2] = cp[0] / cp[2]
@@ -49,17 +49,18 @@ def toBarycentric(vertices, point):
 
 
 # Изображаем с текстурами
-def draw_triangle(vertices, z_buffer, texture, tex_coords, intensity, image):
-    xmin, xmax = np.min(vertices[:, 0]), np.max(vertices[:, 0])
-    ymin, ymax = np.min(vertices[:, 1]), np.max(vertices[:, 1])
+def drawTriangle(vertices, z_buffer, texture, tex_coords, intensity, image):
+    xMin, xMax = np.min(vertices[:, 0]), np.max(vertices[:, 0])
+    yMin, yMax = np.min(vertices[:, 1]), np.max(vertices[:, 1])
 
-    for x in range(int(xmin), int(xmax)):
-        for y in range(int(ymin), int(ymax)):
+    for x in range(int(xMin), int(xMax)):
+        for y in range(int(yMin), int(yMax)):
             p = np.array([x, y, 0])
             bc_coords = toBarycentric(vertices, p)
             # проверка принадлежности точки к треугольнику
             if np.all(bc_coords >= 0):
                 z = vertices[0, 2] * bc_coords[0] + vertices[1, 2] * bc_coords[1] + vertices[2, 2] * bc_coords[2]
+                #смотрим в z-buffer
                 if z_buffer[x, y] < z:
                     z_buffer[x, y] = z
                     tc = tex_coords[0] * bc_coords[0] + tex_coords[1] * bc_coords[1] + tex_coords[2] * bc_coords[2]
@@ -69,17 +70,3 @@ def draw_triangle(vertices, z_buffer, texture, tex_coords, intensity, image):
                     # return
 
 
-def vertices_matrix(faces, vertices, face_id):
-    vert_matrix = np.zeros((3, 3))
-    vert_matrix[X] = vertices[faces[face_id, 0]]
-    vert_matrix[Y] = vertices[faces[face_id, 1]]
-    vert_matrix[Z] = vertices[faces[face_id, 2]]
-    return vert_matrix
-
-
-def tex_vertices_matrix(texfaces, texcoords, face_id):
-    vert_matrix = np.zeros((3, 2))
-    vert_matrix[X] = texcoords[texfaces[face_id, 0]]
-    vert_matrix[Y] = texcoords[texfaces[face_id, 2]]
-    vert_matrix[Z] = texcoords[texfaces[face_id, 1]]
-    return vert_matrix

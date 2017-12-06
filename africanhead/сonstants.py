@@ -1,22 +1,23 @@
-import math
+import numpy as np
 
+# ----------КАМЕРА----------
 # откуда смотрим (позиция камеры)
-cameraX = 2.0
-cameraY = 2.0
-cameraZ = -5.0
+cameraX = 0.0
+cameraY = 0.0
+cameraZ = 0.0
 
 # куда смотрим из камеры
-lookPointX = 2.0
+lookPointX = 0.0
 lookPointY = 0.0
-lookPointZ = -3.0
+lookPointZ = 0.0
 
 #
-ViewportWidth = 640
-ViewportHeight = 480
-ViewportX = 0
-ViewportY = 0
+viewportWidth = 640
+viewportHeight = 480
+viewportX = 0
+viewportY = 0
 
-# ---------Трансформация----------
+# ---------ТРАНСФОРМАЦИЯ----------
 # координаты трансляция модели
 ModelTranslateX = 2.0
 ModelTranslateY = -2.0
@@ -28,9 +29,9 @@ YAxisRotation = 0.0
 ZAxisRotation = 0.0
 
 # радианные углы
-XAxisRotation = math.radians(XAxisRotation)
-YAxisRotation = math.radians(YAxisRotation)
-ZAxisRotation = math.radians(ZAxisRotation)
+XAxisRotation = np.radians(XAxisRotation)
+YAxisRotation = np.radians(YAxisRotation)
+ZAxisRotation = np.radians(ZAxisRotation)
 
 """
 https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_BasicsTheory.html#zz-4.4
@@ -53,7 +54,7 @@ nearPlane = 1.0
 
 # ??соотношение сторон, разобраться зачем точно оно нужно
 # у нас же размер объектов не должен зависеть от расстояния...
-aspectRatio = ViewportWidth / ViewportHeight
+aspectRatio = viewportWidth / viewportHeight
 
 # ----------ОСВЕЩЕНИЕ----------
 # Составляющие освещеия
@@ -68,23 +69,3 @@ diffuseMatB = 0.8
 specularMatR = 0.6
 specularMatG = 0.6
 specularMatB = 1.0
-
-"""
-shininess = 0.02
-
-#position of global light source
-lightSourceX = 1.0
-lightSourceY = 0.5
-lightSourceZ = 6.0
-
-#colour of light source
-lightSourceR = 0.6
-lightSourceG = 0.6
-lightSourceB = 0.8
-
-
-#colour of ambientLight
-ambientLightR = 0.6
-ambientLightG = 0.3
-ambientLightB = 0.4
-"""
