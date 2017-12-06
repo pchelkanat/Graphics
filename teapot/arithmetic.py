@@ -64,6 +64,7 @@ def ortho_project(vertexes):
                       [0, 2 / (t - b), 0, -((t + b) / (t - b))],
                       [0, 0, 2 / (f - n), -((f + n) / (f - n))],
                       [0, 0, 0, 1]])
+    # отсчет начинается с 0, прибавлять 1?
     w, h = r - l, t - b
     vertexes1 = ortho.dot(vertexes.T)
     # print(np.min(vertexes[0]), np.max(vertexes[0]), np.min(vertexes[1]), np.max(vertexes[1]))
@@ -72,17 +73,18 @@ def ortho_project(vertexes):
 
 # Проективная СК
 def vertexes_to_projective(vertexes):
-    return np.concatenate([vertexes.copy(), np.ones(vertexes.shape[0]).reshape(-1, 1)], axis=1)
+    return np.concatenate([vertexes.copy(), np.ones(vertexes.shape[0]).reshape(-1, 1)],
+                          axis=1)  #А зачем Петровец делал reshape?
 
 def transform(vertices):
     return np.hstack((vertices, np.ones(vertices.shape[0])[:, np.newaxis]))
 
 
 # Перенос
-def translation(delta):
+def translation(Ex, Ey):
     return np.array([[1, 0, 0],
                      [0, 1, 0],
-                     [delta[0], delta[1], 1]])
+                     [Ex, Ey, 1]])
 
 
 # Масштаб
@@ -118,10 +120,11 @@ def screen_project(vertexes, width, height, w, h):
     vertexes = np.round(vertexes)
     vertexes = np.array(vertexes, dtype=int)
     vertexes = vertexes[:, :2]
-    print(np.min(vertexes[0]), np.max(vertexes[0]), np.min(vertexes[1]), np.max(vertexes[1]))
+    #print(np.min(vertexes[0]), np.max(vertexes[0]), np.min(vertexes[1]), np.max(vertexes[1]))
     return vertexes
 
 
+#Еще одна формула
 def retransform(vertices):
     # print(vertices.shape)
     # 3644,3
@@ -134,24 +137,25 @@ def retransform(vertices):
     return vertices
 
 
+"""
 # матрица, заменяющая всю трансформацию
 def matrix(vertices, delta, num_scale, alpha):
     # преобразуем в проективные СК, добавляем координату w
-    vertices = transform(vertices)
+    newvertices = transform(vertices)
     # трансформируем
-    translates = np.dot(vertices, translation(-delta))
-    scales = np.dot(translates, scale(num_scale))
-    rotates = np.dot(scales, rotation(alpha))
+    translates = np.dot(newvertices, translation(-delta[0], -delta[1]))
+    scales = np.dot(translates, scale(i * num_scale / frames_count))
+    rotates = np.dot(scales, rotation(i * alpha / frames_count))
     detransletes = np.dot(rotates, translation(delta))
     # переводим в декартовую
     vertices = retransform(detransletes)
 
     return vertices
-
+"""
 
 # Изменение цвета
 def coloring(color1, color2):
-    for i in range(255):
+    for i in range(256):
         t = i / 255
         point = np.uint8([color1[0] * (1 - t) + color2[0] * t, color1[1] * (1 - t) + color2[1] * t])
         color = [point[0], point[1], 0]
