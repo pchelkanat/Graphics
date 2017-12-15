@@ -19,9 +19,9 @@ viewportY = 0
 
 # ---------ТРАНСФОРМАЦИЯ----------
 # координаты трансляция модели
-ModelTranslateX = 2.0
-ModelTranslateY = -2.0
-ModelTranslateZ = -2.0
+modelTranslateX = 2.0
+modelTranslateY = -2.0
+modelTranslateZ = -2.0
 
 # повороты по осям
 XAxisRotation = 0.0
@@ -34,7 +34,7 @@ YAxisRotation = np.radians(YAxisRotation)
 ZAxisRotation = np.radians(ZAxisRotation)
 
 """
-https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_BasicsTheory.html#zz-4.4
+https://show.ntu.edu.sg/home/ehchua/programming/opengl/CG_BasicsTheory.html#zz-4.4
 The camera has a limited field of view, which exhibits a view frustum (truncated pyramid), and is specified by four parameters:
 fovy, aspect, zNear and zFar.
 
@@ -48,24 +48,41 @@ fovy, aspect, zNear and zFar.
 # fov
 FOV = 90.0
 
-# far and near для проективной матрицы
+# far and near
 farPlane = 250.0
 nearPlane = 1.0
 
-# ??соотношение сторон, разобраться зачем точно оно нужно
-# у нас же размер объектов не должен зависеть от расстояния...
+# перспективная
 aspectRatio = viewportWidth / viewportHeight
 
 # ----------ОСВЕЩЕНИЕ----------
 # Составляющие освещеия
-ambientMatR = 0.4
-ambientMatG = 0.4
-ambientMatB = 0.4
 
-diffuseMatR = 1.0
-diffuseMatG = 0.6
-diffuseMatB = 0.8
+#k
+ambientMatR = 0.1
+ambientMatG = 0.1
+ambientMatB = 0.1
 
-specularMatR = 0.6
-specularMatG = 0.6
-specularMatB = 1.0
+diffuseMatR = 0.5
+diffuseMatG = 0.5
+diffuseMatB = 0.5
+
+specularMatR = 0.8
+specularMatG = 0.8
+specularMatB = 0.8
+
+# блик
+shininess = 1
+
+# i
+lightSourceX = 1.0
+lightSourceY = 0.5
+lightSourceZ = 6.0
+
+lightSourceR = 0.6
+lightSourceG = 0.6
+lightSourceB = 0.8
+
+ambientLightR = 0.6
+ambientLightG = 0.3
+ambientLightB = 0.4
