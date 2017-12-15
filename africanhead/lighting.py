@@ -26,14 +26,14 @@ def specular(normal, trianglePoint):
                  cameraY - trianglePoint[1],
                  cameraZ - trianglePoint[2],
                  1.0 - trianglePoint[3]]
-
+    # V
     eyeVector = vector.normalize(eyeVector)
 
     lightVec = [lightPoint[0] - trianglePoint[0],
                 lightPoint[1] - trianglePoint[1],
                 lightPoint[2] - trianglePoint[2],
                 lightPoint[3] - trianglePoint[3]]
-
+    # L
     lightVec = vector.normalize(lightVec)
 
     # H вектор

@@ -25,6 +25,7 @@ def dotProduct(vec1, vec2):
 
 
 # Векторное произведение (вычисление определителя матрицы) с нормализацией
+"""
 def crossProduct(vec1, vec2):
     a1, a2, a3 = vec1[0], vec1[1], vec1[2]
     b1, b2, b3 = vec2[0], vec2[1], vec2[2]
@@ -33,7 +34,7 @@ def crossProduct(vec1, vec2):
     k = a1 * b2 - a2 * b1
     result = normalize([i, j, k, 0])
     return result
-
+"""
 
 def cross(vec1, vec2):
     a1, a2, a3 = np.double(vec1[0]), np.double(vec1[1]), np.double(vec1[2])

@@ -12,7 +12,7 @@ identityMatrix = np.array([[1, 0, 0, 0],
 worldMatrix = np.array([[1, 0, 0, 0],
                         [0, 1, 0, 0],
                         [0, 0, 1, 0],
-                        [ModelTranslateX, ModelTranslateY, ModelTranslateZ, 1]])
+                        [modelTranslateX, modelTranslateY, modelTranslateZ, 1]])
 # обратная ей
 _worldMatrix = np.linalg.inv(worldMatrix)
 

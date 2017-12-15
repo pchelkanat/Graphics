@@ -45,9 +45,9 @@ def toBarycentric(v_coords, p):
     if np.abs(cp[2]) < 1:
         return np.array([0.0, 0.0, 0.0])  # нужно, иначе devision by zero
     bc_coords = np.zeros(3)  # бк
-    bc_coords[0] = 1.0 - (cp[0] + cp[1]) / cp[2]
-    bc_coords[1] = cp[1] / cp[2]
-    bc_coords[2] = cp[0] / cp[2]
+    bc_coords[0] = 1.0 - (cp[0] + cp[1]) / cp[2]  # alpha
+    bc_coords[1] = cp[1] / cp[2]  # beta
+    bc_coords[2] = cp[0] / cp[2]  # gamma
     return bc_coords
 
 

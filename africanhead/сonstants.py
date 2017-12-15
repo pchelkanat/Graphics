@@ -19,9 +19,9 @@ viewportY = 0
 
 # ---------ТРАНСФОРМАЦИЯ----------
 # координаты трансляция модели
-ModelTranslateX = 2.0
-ModelTranslateY = -2.0
-ModelTranslateZ = -2.0
+modelTranslateX = 2.0
+modelTranslateY = -2.0
+modelTranslateZ = -2.0
 
 # повороты по осям
 XAxisRotation = 0.0
@@ -48,16 +48,17 @@ fovy, aspect, zNear and zFar.
 # fov
 FOV = 90.0
 
-# far and near для проективной матрицы
+# far and near
 farPlane = 250.0
 nearPlane = 1.0
 
-# ??соотношение сторон, разобраться зачем точно оно нужно
-# у нас же размер объектов не должен зависеть от расстояния...
+# перспективная
 aspectRatio = viewportWidth / viewportHeight
 
 # ----------ОСВЕЩЕНИЕ----------
 # Составляющие освещеия
+
+#k
 ambientMatR = 0.1
 ambientMatG = 0.1
 ambientMatB = 0.1
@@ -73,17 +74,15 @@ specularMatB = 0.8
 # блик
 shininess = 1
 
-# позиция источника освещения
+# i
 lightSourceX = 1.0
 lightSourceY = 0.5
 lightSourceZ = 6.0
 
-# colour of light source
 lightSourceR = 0.6
 lightSourceG = 0.6
 lightSourceB = 0.8
 
-# colour of global ambientLight
 ambientLightR = 0.6
 ambientLightG = 0.3
 ambientLightB = 0.4

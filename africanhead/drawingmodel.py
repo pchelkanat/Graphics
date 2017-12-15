@@ -63,7 +63,7 @@ def draw_model(faces, vertices, texfaces, texcoords, texture, image):
     lightPoint = np.array([0.0, 0.0, -1.0])
     # lightPoint= calculateColor()
     image_shape = np.array([image.shape[0], image.shape[1]])
-    # определение z-buffer, зачем парится по поводу предела, когда у numpy есть бесконечность!
+    # определение z-buffer, зачем парится по поводу предела, когда у numpy есть бесконечность!:D
     z_buffer = np.zeros((image_shape[0], image_shape[1]))
     z_buffer[:] = -np.inf
     for face_id in range(faces.shape[0]):
