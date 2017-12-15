@@ -34,7 +34,7 @@ YAxisRotation = np.radians(YAxisRotation)
 ZAxisRotation = np.radians(ZAxisRotation)
 
 """
-https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_BasicsTheory.html#zz-4.4
+https://show.ntu.edu.sg/home/ehchua/programming/opengl/CG_BasicsTheory.html#zz-4.4
 The camera has a limited field of view, which exhibits a view frustum (truncated pyramid), and is specified by four parameters:
 fovy, aspect, zNear and zFar.
 
@@ -58,14 +58,32 @@ aspectRatio = viewportWidth / viewportHeight
 
 # ----------ОСВЕЩЕНИЕ----------
 # Составляющие освещеия
-ambientMatR = 0.4
-ambientMatG = 0.4
-ambientMatB = 0.4
+ambientMatR = 0.1
+ambientMatG = 0.1
+ambientMatB = 0.1
 
-diffuseMatR = 1.0
-diffuseMatG = 0.6
-diffuseMatB = 0.8
+diffuseMatR = 0.5
+diffuseMatG = 0.5
+diffuseMatB = 0.5
 
-specularMatR = 0.6
-specularMatG = 0.6
-specularMatB = 1.0
+specularMatR = 0.8
+specularMatG = 0.8
+specularMatB = 0.8
+
+# блик
+shininess = 1
+
+# позиция источника освещения
+lightSourceX = 1.0
+lightSourceY = 0.5
+lightSourceZ = 6.0
+
+# colour of light source
+lightSourceR = 0.6
+lightSourceG = 0.6
+lightSourceB = 0.8
+
+# colour of global ambientLight
+ambientLightR = 0.6
+ambientLightG = 0.3
+ambientLightB = 0.4
